@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Nutrition OS | سیستم‌عامل تغذیه</title>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -710,7 +710,7 @@
 
         .left-floating-add-btn {
             position: fixed;
-            bottom: 105px;
+            bottom: calc(90px + env(safe-area-inset-bottom));
             left: 20px;
             background: var(--primary);
             color: #fff;
