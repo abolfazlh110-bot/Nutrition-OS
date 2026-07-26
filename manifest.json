@@ -2,7 +2,7 @@
   "name": "Nutrition OS | سیستم‌عامل تغذیه",
   "short_name": "Nutrition OS",
   "description": "ردیاب تغذیه، کالری، فعالیت و وزن",
-  "start_url": "./Nutrition_OS_11.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
