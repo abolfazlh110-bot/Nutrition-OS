@@ -1,6 +1,6 @@
 const CACHE_NAME = 'nutrition-os-cache-v1';
 const APP_SHELL = [
-  './Nutrition_OS_11.html',
+  './index.html',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'
@@ -51,7 +51,7 @@ self.addEventListener('message', (event) => {
       tag: data.tag || 'nutrition-os-reminder',
       renotify: true,
       vibrate: [120, 60, 120],
-      data: { url: data.url || './Nutrition_OS_11.html' }
+      data: { url: data.url || './index.html' }
     };
     self.registration.showNotification(title, options);
   }
@@ -60,7 +60,7 @@ self.addEventListener('message', (event) => {
 // کلیک روی نوتیفیکیشن: فوکوس روی اپ یا باز کردن تب جدید
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const targetUrl = (event.notification.data && event.notification.data.url) || './Nutrition_OS_11.html';
+  const targetUrl = (event.notification.data && event.notification.data.url) || './index.html';
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
       for (const client of clientList) {
