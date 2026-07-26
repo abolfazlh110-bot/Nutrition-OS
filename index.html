@@ -3951,6 +3951,69 @@
         checkScheduledReminders();
         setInterval(checkScheduledReminders, 30000);
     }
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
+
+// ۱. تنظیمات فایربیس خود را اینجا وارد کنید
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+// راه‌اندازی فایربیس
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
+
+// ۲. ثبت Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then((registration) => {
+        console.log('Service Worker با موفقیت ثبت شد:', registration.scope);
+      })
+      .catch((err) => {
+        console.log('خطا در ثبت Service Worker:', err);
+      });
+  });
+}
+
+// ۳. تابع درخواست مجوز و دریافت توکن (با کلید VAPID شما)
+async function requestNotificationPermission() {
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+      console.log('مجوز نوتیفیکیشن صادر شد.');
+      
+      const token = await getToken(messaging, { 
+        vapidKey: 'BFWFim5n_7JA00br0r5ydkwaMLtXsm11FWvGY6htS45-sR3N1_OXyWxbCRAmUYQEcK_bK6JZY3Ipf0ifTiFJb7A' 
+      });
+      
+      if (token) {
+        console.log('Token دریافت شد:', token);
+        // این توکن را برای این کاربر در دیتابیس (مثلا Firestore) ذخیره کنید
+      } else {
+        console.log('توکنی یافت نشد.');
+      }
+    } else {
+      console.log('کاربر اجازه ارسال نوتیفیکیشن را نداد.');
+    }
+  } catch (error) {
+    console.error('خطا در دریافت مجوز نوتیفیکیشن:', error);
+  }
+}
+
+// ۴. گوش دادن به پیام‌ها زمانی که سایت باز است
+onMessage(messaging, (payload) => {
+  console.log('پیام در حالت باز بودن سایت دریافت شد: ', payload);
+  alert(`پیام جدید: ${payload.notification.title} - ${payload.notification.body}`);
+});
+
+// (اختیاری) اگر می‌خواهید با کلیک روی یک دکمه درخواست مجوز صادر شود:
+// document.getElementById('notify-btn').addEventListener('click', requestNotificationPermission);
 
     // --------- نصب PWA (Add to Home Screen) ---------
     window.addEventListener('beforeinstallprompt', (e) => {
